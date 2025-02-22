@@ -1,8 +1,9 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
-import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import KYCUpload from "./KYCUpload";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
@@ -10,25 +11,28 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/");
+      router.push("/auth/signin");
     }
   }, [status, router]);
 
   if (status === "loading") {
-    return <p className="text-center text-white">Loading...</p>;
+    return <div className="text-center text-white">Loading...</div>;
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black">
-      <div className="p-8 bg-white/10 backdrop-blur-md rounded-xl shadow-lg w-96">
-        <h2 className="text-white text-2xl font-bold mb-4">Welcome, {session?.user?.name || "User"}!</h2>
-        <button
-          onClick={() => signOut({ callbackUrl: "/" })}
-          className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg"
-        >
-          Sign Out
-        </button>
-      </div>
+    <div>
+      <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
+      {session ? (
+        <div>
+          <p className="mb-4">Welcome, {session.user?.name || "User"}!</p>
+          <div className="bg-white/10 p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold mb-3">KYC Verification</h2>
+            <KYCUpload />
+          </div>
+        </div>
+      ) : (
+        <p>You must be signed in to access this page.</p>
+      )}
     </div>
   );
 }

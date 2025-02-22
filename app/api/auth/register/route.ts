@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import User from "@/app/models/User";
 import { connectDB } from "@/app/lib/mongodb";
+import { signIn } from "@/app/lib/auth"; // Custom signIn function
 
 export async function POST(req: Request) {
   try {
@@ -20,6 +21,13 @@ export async function POST(req: Request) {
     // Create new user
     const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
+
+    // Auto sign-in after signup
+    const authResponse = await signIn("credentials", { email, password, redirect: false });
+
+    if (authResponse?.error) {
+      return NextResponse.json({ error: "Auto sign-in failed" }, { status: 500 });
+    }
 
     return NextResponse.json({ message: "User registered successfully" }, { status: 201 });
   } catch (error) {
