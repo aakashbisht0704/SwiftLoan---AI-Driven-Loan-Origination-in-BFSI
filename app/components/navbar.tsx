@@ -47,7 +47,7 @@ export const Navbar = () => {
               </Link>
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
-                className="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-full transition"
+                className="px-5 py-2 bg-white hover:bg-gray-300 text-purple-600 font-semibold rounded-full transition"
               >
                 Sign Out
               </button>

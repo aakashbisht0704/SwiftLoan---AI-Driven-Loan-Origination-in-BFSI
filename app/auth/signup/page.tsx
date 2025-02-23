@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function Signup() {
   const router = useRouter();
@@ -11,16 +12,38 @@ export default function Signup() {
   const handleSignup = async () => {
     setError("");
 
+    // Register the user
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     });
 
+    const data = await res.json();
+
     if (res.status === 201) {
-      router.push("/auth/signin"); // Redirect to sign-in after registration
+      // Sign in user automatically
+      const result = await signIn("credentials", {
+        email: user.email,
+        password: user.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError("Automatic login failed. Please sign in manually.");
+        return;
+      }
+
+      // Redirect logic after sign-in
+      const sessionRes = await fetch("/api/auth/session"); // Get session data
+      const session = await sessionRes.json();
+
+      if (session?.user?.onboarded) {
+        router.push("/dashboard");
+      } else {
+        router.push("/onboarding");
+      }
     } else {
-      const data = await res.json();
       setError(data.error);
     }
   };
@@ -47,7 +70,10 @@ export default function Signup() {
         onChange={(e) => setUser({ ...user, password: e.target.value })}
       />
       {error && <p className="text-red-500">{error}</p>}
-      <button onClick={handleSignup} className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full transition">
+      <button
+        onClick={handleSignup}
+        className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full transition"
+      >
         Sign Up
       </button>
     </div>

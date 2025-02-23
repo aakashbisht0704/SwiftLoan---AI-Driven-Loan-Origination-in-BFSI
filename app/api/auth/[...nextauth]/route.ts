@@ -1,10 +1,10 @@
-import NextAuth from "next-auth";
+import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { connectDB } from "@/app/lib/mongodb";  // Ensure this path is correct
-import User from "@/app/models/User";  // Ensure this path is correct
+import { connectDB } from "@/app/lib/mongodb"; // Ensure this path is correct
+import User from "@/app/models/User"; // Ensure this path is correct
 import bcrypt from "bcryptjs";
 
-const authOptions = {
+const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -13,26 +13,38 @@ const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        await connectDB();  // Connect to MongoDB
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Missing email or password");
+        }
 
-        const user = await User.findOne({ email: credentials?.email });
-        if (!user) throw new Error("No user found");
+        await connectDB(); // Connect to MongoDB
 
-        const isValidPassword = await bcrypt.compare(credentials!.password, user.password);
-        if (!isValidPassword) throw new Error("Invalid password");
+        const user = await User.findOne({ email: credentials.email });
+        if (!user) {
+          throw new Error("No user found");
+        }
 
-        return user;
+        const isValidPassword = await bcrypt.compare(credentials.password, user.password);
+        if (!isValidPassword) {
+          throw new Error("Invalid password");
+        }
+
+        return {
+          id: user._id.toString(),
+          name: user.name,
+          email: user.email,
+        };
       },
     }),
   ],
   pages: {
-    signIn: "/auth/signin", // Ensure this page exists
+    signIn: "/auth/signin",
   },
   session: {
-    strategy: "jwt" as const,
+    strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST, authOptions };

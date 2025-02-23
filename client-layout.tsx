@@ -1,9 +1,11 @@
-import type { Metadata } from "next";
+"use client";
+
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { Navbar } from "./components/navbar";
-import SessionProvider from "./components/SessionProvider";
-import OnboardingGuard from "./components/OnboardingGuard"; // Import new client component
+import "@app/globals.css";
+import { Navbar } from "./app/components/navbar";
+import SessionProvider from "./app/components/SessionProvider";
+import OnboardingGuard from "./app/components/OnboardingGuard"; // Import new client component
+import { usePathname } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,22 +17,20 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "SwiftLoan",
-  description: "AI-driven loan origination platform",
-};
-
-export default function RootLayout({
+export default function ClientLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const isDashboard = pathname.startsWith("/dashboard");
+
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SessionProvider>
           <OnboardingGuard> {/* Onboarding check logic moved here */}
-            <Navbar />
+            {!isDashboard && <Navbar />}
             {children}
           </OnboardingGuard>
         </SessionProvider>
