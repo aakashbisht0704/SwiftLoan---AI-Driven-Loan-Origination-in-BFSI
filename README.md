@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI-Driven Loan Origination Platform
 
-## Getting Started
+## Project Overview
+This project is an **AI-Driven Loan Origination Platform** built using **Next.js, Tailwind CSS, NextAuth.js, and MongoDB**. The platform is designed to streamline the loan application process in the **BFSI (Banking, Financial Services, and Insurance)** sector using **Machine Learning** models for loan approval predictions.
 
-First, run the development server:
+🏆 This project was built in the **Ctrl + Alt + Hack** hackathon at **NSUT**, hosted by **SpaceCon**, and developed within **24 hours**.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Features
+- 🔑 User Authentication with **NextAuth.js (JWT)**
+- 📊 Data Visualization with **React-Charts**
+- 💸 Income Tracking and Debt-to-Income Ratio Calculation
+- 🔍 Credit Score Fetching and Display
+- 🧠 Loan Approval Prediction using **ML Model**
+- 🎯 Loan History Tracking
+- 📝 Dynamic Onboarding Form with Multi-Step Flow
+
+## Tech Stack
+### Frontend
+- **Next.js 14** (React Framework)
+- **TypeScript (TSX)**
+- **Tailwind CSS** for UI Styling
+- **shadcn/ui** for Modern UI Components
+- **Framer Motion** for Animations
+- **React Charts** for Data Visualizations
+
+### Backend
+- **MongoDB** for Database
+- **Java Spring Boot** for ML Model Hosting (via API)
+- **PyMongo** for ML Database Interfacing
+- **NextAuth.js with JWT** for Authentication
+
+## Folder Structure
+```
+├── pages
+│   ├── api
+│   │   └── auth
+│   │       └── [...nextauth].ts   # NextAuth.js JWT Authentication API
+│   ├── index.tsx                 # Landing Page
+│   ├── dashboard.tsx             # Main Dashboard Page
+│   └── onboarding.tsx            # Multi-step Onboarding Form
+│
+├── components
+│   ├── Navbar.tsx               # Navigation Bar
+│   ├── Sidebar.tsx              # Sidebar Menu
+│   ├── Charts.tsx               # Charts Visualization Component
+│   └── LoanCard.tsx             # Loan Application Card
+│
+├── styles                       # Tailwind Global Styles
+└── utils                        # Utility Functions
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Authentication Flow 🔑
+- User logs in via **NextAuth.js** with JWT tokens.
+- Session maintained globally using `SessionProvider`
+- Protected Routes using `useSession()`
+- JWT Token sent in headers for API requests
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Data Visualization 📊
+- **React Charts** library used for interactive data visualizations.
+- Displays Income vs Debt comparison.
+- Loan Approval Probability chart.
+- Monthly Expense Breakdown.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Animations 🎯
+- Page transitions & button animations with **Framer Motion**
+- Smooth fade-in and slide effects.
 
-## Learn More
+## How to Run Locally
+### Prerequisites
+- Node.js
+- MongoDB
 
-To learn more about Next.js, take a look at the following resources:
+### Setup
+```bash
+git clone https://github.com/username/project.git
+cd project
+npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Environment Variables
+Create a `.env` file in the root directory with the following:
+```env
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your_secret_key
+MONGO_URI=mongodb://localhost:27017/spaceCon
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Start Server
+```bash
+npm run dev
+```
 
-## Deploy on Vercel
+## Future Scope 🔥
+- AI Loan Recommendation System
+- Credit Score Calculation
+- Payment Reminders
+- Loan Repayment Tracking
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributors
+- **[Your Name]** - Frontend Developer
+- **Teammate 1** - Backend Developer
+- **Teammate 2** - Machine Learning Engineer
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+This project is licensed under the **MIT License**.
+
