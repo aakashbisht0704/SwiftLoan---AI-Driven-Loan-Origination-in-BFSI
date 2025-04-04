@@ -96,11 +96,6 @@ npm run dev
 - Payment Reminders
 - Loan Repayment Tracking
 
-## Contributors
-- **[Your Name]** - Frontend Developer
-- **Teammate 1** - Backend Developer
-- **Teammate 2** - Machine Learning Engineer
-
 ## License
 This project is licensed under the **MIT License**.
 
